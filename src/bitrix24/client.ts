@@ -2,8 +2,26 @@ import fetch from 'node-fetch';
 import { z } from 'zod';
 
 // Environment configuration
-const BITRIX24_WEBHOOK_URL = process.env.BITRIX24_WEBHOOK_URL || 
-  'https://sviluppofranchising.bitrix24.it/rest/27/wwugdez6m774803q/';
+const resolveWebhookUrl = (webhookUrl?: string): string => {
+  const configuredUrl = webhookUrl ?? process.env.BITRIX24_WEBHOOK_URL;
+
+  if (!configuredUrl) {
+    throw new Error(
+      'BITRIX24_WEBHOOK_URL is not configured. Please set this environment variable to your Bitrix24 incoming webhook URL.',
+    );
+  }
+
+  try {
+    const parsedUrl = new URL(configuredUrl);
+    return parsedUrl.toString().replace(/\/$/, '');
+  } catch (error) {
+    throw new Error(
+      `Invalid BITRIX24_WEBHOOK_URL provided: ${
+        error instanceof Error ? error.message : String(error)
+      }`,
+    );
+  }
+};
 
 // Validation schemas
 const BitrixResponseSchema = z.object({
@@ -113,8 +131,8 @@ export class Bitrix24Client {
   private lastRequestTime = 0;
   private readonly RATE_LIMIT_DELAY = 500; // 500ms between requests (2 requests/second)
 
-  constructor(webhookUrl: string = BITRIX24_WEBHOOK_URL) {
-    this.baseUrl = webhookUrl.replace(/\/$/, ''); // Remove trailing slash
+  constructor(webhookUrl?: string) {
+    this.baseUrl = resolveWebhookUrl(webhookUrl);
   }
 
   private async enforceRateLimit(): Promise<void> {
