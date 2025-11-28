@@ -306,6 +306,54 @@ Set `NODE_ENV=development` and `LOG_LEVEL=debug` in your `.env` file for detaile
 - `searchCRM(query: string, entityTypes?: string[]): Promise<any>`
 - `validateWebhook(): Promise<boolean>`
 
+## 🚀 Vercel Deployment
+
+This MCP server can be deployed to Vercel as an Edge Function for serverless operation.
+
+### Vercel Setup
+
+1. **Install Vercel CLI:**
+```bash
+npm install -g vercel
+```
+
+2. **Deploy to Vercel:**
+```bash
+vercel
+```
+
+3. **Configure environment variables in Vercel Dashboard:**
+   - `BITRIX24_WEBHOOK_URL` - Your Bitrix24 webhook URL
+
+### Edge Runtime Endpoint
+
+The MCP server is available at `/api/mcp` as an Edge Function with the following capabilities:
+
+- **GET `/api/mcp`** - Returns server info and available tools
+- **POST `/api/mcp`** - Handles JSON-RPC requests
+
+### JSON-RPC Methods
+
+| Method | Description |
+|--------|-------------|
+| `initialize` | Initialize MCP session |
+| `tools/list` | List all available tools |
+| `tools/call` | Execute a tool with parameters |
+
+### Configuration Files
+
+- `vercel.json` - Vercel configuration with Edge runtime settings
+- `api/mcp.ts` - Edge function handler
+
+### Example Request
+
+```bash
+# List available tools
+curl -X POST https://your-app.vercel.app/api/mcp \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc": "2.0", "method": "tools/list", "id": 1}'
+```
+
 ## 🤝 Contributing
 
 1. Fork the repository

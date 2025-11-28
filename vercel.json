@@ -1,0 +1,14 @@
+{
+  "version": 3,
+  "functions": {
+    "api/mcp.ts": {
+      "runtime": "edge"
+    }
+  },
+  "routes": [
+    {
+      "src": "/api/mcp",
+      "dest": "api/mcp.ts"
+    }
+  ]
+}
