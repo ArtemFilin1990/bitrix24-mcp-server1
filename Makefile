@@ -17,7 +17,7 @@ up:
 
 down:
 	@echo "Stopping application..."
-	@pkill -f "node server.js" || true
+	@pkill -f "node.*server\.js$$" 2>/dev/null || true
 
 build:
 	npm run build
