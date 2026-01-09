@@ -1,0 +1,41 @@
+# Dependencies
+node_modules
+npm-debug.log*
+
+# Git
+.git
+.gitignore
+
+# Build artifacts
+build
+dist
+coverage
+.nyc_output
+
+# IDE / Editor
+.vscode
+.idea
+*.swp
+*.swo
+
+# Large binaries and docs (not needed in image)
+*.dxt
+*.pdf
+bitrix24.dxt
+
+# Environment
+.env
+.env.*
+
+# CI / DevOps configs not needed at runtime
+.github
+.pre-commit-config.yaml
+Makefile
+.editorconfig
+.eslintrc.js
+.prettierrc
+
+# Tests
+test
+*.test.js
+*.test.ts
